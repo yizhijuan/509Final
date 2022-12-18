@@ -1,0 +1,49 @@
+<!doctype html>
+<body>
+    <h1 align="center">TicTacToe Board </h1>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <center>{{ game.player1_name }} VS {{ game.player2_name}}</center>
+    position is {{ position }}
+    <h3 align="center">Player1's Turn</h3>
+    <!--
+    <table class="board">
+        <tr>
+            <td class="cell"></td>
+            <td class="cell"></td>
+            <td class="cell"></td>
+        </tr>
+        <tr>
+            <td class="cell"></td>
+            <td class="cell"></td>
+            <td class="cell"></td>
+        </tr>
+        <tr>
+            <td class="cell"></td>
+            <td class="cell"></td>
+            <td class="cell"></td>
+        </tr>
+    </table>-->
+
+   <table class="board">
+    {% for row in TTTboard %}
+        <tr>
+        {% for cell in row %}             
+            {% if cell == 'X' %}
+                <td><img src="../cross.png" width="35" id="cross"/></td>
+            {% elif cell == 'O' %}
+                <td><img src="../circle.png" width="35" id="circle"/></td>
+            {% elif cell == None %}
+                <td class="cell"></td>
+            {% endif %}             
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table> 
+
+    </p>
+    <form action="" method="POST">
+        Your chioce: <input type="text" name="position"> (Please enter a number in 1~9)
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
