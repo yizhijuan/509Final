@@ -1,0 +1,25 @@
+
+    .board{
+        margin:0 auto;
+    }
+    .cell{
+        width:50px;
+        height:50px;
+        text-align:center;
+        background:rgb(225,225,225);  
+    }
+
+    #champion {
+    position: absolute;   
+    left: 174px;  
+    top: 136px;  
+    }
+
+    .rankboard{
+        border-collapse:collapse;
+    }
+    .rankcell{
+        width:100px;
+        height:30px;
+        text-align:center;
+    }
