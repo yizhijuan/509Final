@@ -1,6 +1,6 @@
 <!doctype html>
 <body>
-    <h1 align="center">TicTacToe Board </h1>
+    <h1 align="center">Tic-Tac-Toe Game</h1>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <center>X: {{ game.player1_name }}</center>
     <center>O: {{ game.player2_name }}</center>
@@ -16,9 +16,9 @@
         <tr>
         {% for cell in row %}             
             {% if cell == 'X' %}
-                <td class="cell"><img src="static/cross.png" width="45" id="cross"/></td>
+                <td class="cell"><img src="static/cross.png" width="50" id="cross"/></td>
             {% elif cell == 'O' %}
-                <td class="cell"><img src="static/circle.png" width="45" id="circle"/></td>
+                <td class="cell"><img src="static/circle.png" width="48" id="circle"/></td>
             {% elif cell == None %}
                 <td class="cell"></td>
             {% endif %}             
