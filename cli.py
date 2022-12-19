@@ -36,9 +36,9 @@ class Board:
 
 
 if __name__ == '__main__':
-    games_pd = pd.read_csv("/Users/yizhijuan/Documents/006UW/509/TTT/games_pd.csv")
-    moves = pd.read_csv("/Users/yizhijuan/Documents/006UW/509/TTT/moves.csv")
-    players = pd.read_csv("/Users/yizhijuan/Documents/006UW/509/TTT/players.csv")
+    games_pd = pd.read_csv("/Users/yizhijuan/Documents/001UW/509/Final/games_pd.csv")
+    moves = pd.read_csv("/Users/yizhijuan/Documents/001UW/509/Final/moves.csv")
+    players = pd.read_csv("/Users/yizhijuan/Documents/001UW/509/Final/players.csv")
     board = Board()
     game = Game()
     game.winner = None

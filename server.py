@@ -40,13 +40,9 @@ class Board:
             self.board[x][y] = type
             return self.board
 
-
 games_pd = pd.read_csv("/Users/yizhijuan/Documents/001UW/509/Final/games_pd.csv")
 moves = pd.read_csv("/Users/yizhijuan/Documents/001UW/509/Final/moves.csv")
 players = pd.read_csv("/Users/yizhijuan/Documents/001UW/509/Final/players.csv")
-board = Board()
-game = Game()
-game.winner = None
 
 
 @app.route('/', methods=['GET','POST'])
@@ -62,10 +58,13 @@ def index():
 def play():
     if request.method == 'POST':  
         run(game, board)
-        if( game.winner != None or game.turn == 9):
+        if(game.winner != None or game.turn == 9):
             return redirect('/gameover')   
         if(game.player1_turn == 0 and game.player_number == 1):
+            #Bot move & check winner
             run(game, board)    
+            if(game.winner != None or game.turn == 9):
+                return redirect('/gameover')  
     return render_template('play.html', TTTboard=board.board, game=game)
 
 @app.route('/gameover')
@@ -74,6 +73,10 @@ def gameover():
         
 
 def game_set():
+    global board
+    board = Board()
+    global game 
+    game = Game()
     game.winner = None
     game.player1_name = request.form['player1_name']
     player2_type = request.form['player2_type']
@@ -118,13 +121,13 @@ def run(game, board):
         board.change_board(position, type) 
         game.winner = game.get_winner(board,game.player1_turn,game)
         
-
+'''record to csv
 players = game.record_result(game, players)
 games_pd = game.add_game(games_pd, game.player1_name, game.player2_name, game.winner)
 games_pd.to_csv("games_pd.csv",index=False)
 moves.to_csv("moves.csv",index=False)
 players.to_csv("players.csv",index=False)
-
+'''
 
 if __name__ == '__main__':
      app.run(debug=True)

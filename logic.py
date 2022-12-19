@@ -64,8 +64,14 @@ class Game:
             print(self.player1_name, "wins!")
             return self.player1_name
         else:
-            print("This is", self.other_player(is_player1_turn, game), "'s turn")
-        print("\n") 
+            print("\n") 
+            if game.turn == 9:
+                print("Draw!")
+                return self.winner
+            if is_player1_turn == 1:
+                print("This is X's turn")
+            else:
+                print("This is O's turn")
         return self.winner
 
     def record_result(self, game, players):
@@ -73,7 +79,6 @@ class Game:
             exist = players.loc[players['Name'] == name]
             #player'name do not exist, create a new one
             if exist.empty:  
-                print('1')
                 players.loc[len(players)] = {
                     "Name":name,
                     "Wins":0,
