@@ -60,40 +60,46 @@ board = Board()
 game = Game()
 game.winner = None
 
+def game_set():
+    game.winner = None
+    game.player1_name = request.form['player1_name']
+    player2_type = request.form['player2_type']
+    if (player2_type == 'human'):
+        game.player2_name = request.form['player2_name'] 
+        game.player_number = 2
+    else: 
+        game.player2_name = 'Bot'
+        game.player_number = 1
+    game.player1_turn = 1
+
 
 @app.route('/', methods=['GET','POST'])
 def index():
     if request.method == 'POST': 
-        game.player1_name = request.form['player1_name']
-        game.player2_name = request.form['player2_name']
-        if (game.player2_name == None ): 
-            game.player2_name = 'Bot'
-            game.player_number = 1
+        game_set()
         return redirect('/play')
     else:
         return render_template('index.html')
 
-is_player1_turn = game.pre_set(board, game.player_number)
-
-@app.route('/base')
-def base():
-    return render_template('base.html', TTTboard = TTTboard)
     
 @app.route('/play', methods=['GET','POST'])
 def play():
-    position = None
-    if request.method == 'POST':
-        position = int(request.form['position'])
-        if( game.winner == None and game.turn < 9):
-            game.turn += 1
-        run(game, board, position)
+    if request.method == 'POST':  
+        run(game, board)
+        if( game.winner != None or game.turn == 9):
+            return redirect('/gameover')   
+        if(game.player1_turn == 0 and game.player_number == 1):
+            run(game, board)    
+    return render_template('play.html', TTTboard=board.board, game=game)
 
-    return render_template('play.html', position=position, TTTboard = board.board, game=game)
-    
+@app.route('/gameover')
+def gameover():
+    return render_template('gameover.html',TTTboard=board.board, game=game)
         
-def run(game, board, position):
+def run(game, board):
         if game.player1_turn == 1:
             # Input a move from the player.
+            position = int(request.form['position'])
             type = 'X'
             moves.loc[len(moves)] = {
                 "Game ID":len(games_pd)+1,
@@ -103,12 +109,12 @@ def run(game, board, position):
             }
             game.player1_turn = 0
         elif game.player1_turn == 0:
-            # Bot generates a position
-            if game.player_number == 1:
+            if game.player_number == 1: # Bot generates a position
+                position = random.randint(1,9)
                 while board.is_valid_move(position) == False:
                     position = random.randint(1,9)                  
-            #elif game.player_number == 2:
-                #position = int(input()) 
+            elif game.player_number == 2:
+                position = int(request.form['position'])
             type = 'O'  
             moves.loc[len(moves)] = {
                 "Game ID":len(games_pd)+1,
@@ -118,10 +124,11 @@ def run(game, board, position):
             }
             game.player1_turn = 1
         # Update the board.
+        game.turn += 1
         board.change_board(position, type) 
-        board.print_board()
         game.winner = game.get_winner(board,game.player1_turn,game)
-    
+        
+
 players = game.record_result(game, players)
 games_pd = game.add_game(games_pd, game.player1_name, game.player2_name, game.winner)
 games_pd.to_csv("games_pd.csv",index=False)
