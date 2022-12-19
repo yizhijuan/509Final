@@ -4,13 +4,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <center>X: {{ game.player1_name }}</center>
     <center>O: {{ game.player2_name }}</center>
-    game turn: {{ game.turn }}<br>
-    {% if game.player1_turn == 1 %}
-        <h3 align="center">{{ game.player1_name }}'s Turn</h3>
-    {% elif game.player1_turn == 0 %}
-        <h3 align="center">{{ game.player2_name}}'s Turn</h3>
+
+    {% if game.winner == None and game.turn == 9 %}
+        <h3 align="center">Draw!</h3>
+    {% elif game.winner != None %}
+        <h3 align="center">{{ game.winner}} Wins!</h3>
     {% endif %}
-    
+
    <table class="board">
     {% for row in TTTboard %}
         <tr>
@@ -27,9 +27,4 @@
     {% endfor %}
     </table> 
 
-    <form action="" method="POST">
-        Your chioce: <input type="text" name="position"> (Please enter a number in 1~9)
-        <br>
-        <input type="submit" value="Submit">
-    </form>
 </body>
